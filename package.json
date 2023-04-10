@@ -17,8 +17,6 @@
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.7",
     "@reduxjs/toolkit": "^1.9.1",
-    "@testing-library/jest-dom": "^5.16.3",
-    "@testing-library/user-event": "^13.5.0",
     "lodash.debounce": "^4.0.8",
     "nanoid": "^4.0.0",
     "notiflix": "^3.2.5",
