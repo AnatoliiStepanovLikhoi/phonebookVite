@@ -1,13 +1,17 @@
 import { ContactListItem } from './ContactListItem/ContactListItem';
 
 import { ContactsList, ContactsMessage } from './ContactList.styled';
-import { Loader } from 'components/Loader/Loader';
+import { Loader } from '../../components/Loader/Loader';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useMemo } from 'react';
 
-import { selectContacts, selectFilter, selectStatus } from 'redux/selectors';
-import { contactsAsyncThunk } from 'redux/contacts/contactsOperations';
+import {
+  selectContacts,
+  selectFilter,
+  selectStatus,
+} from '../../redux/selectors';
+import { contactsAsyncThunk } from '../../redux/contacts/contactsOperations';
 
 export function ContactList() {
   const dispatch = useDispatch();

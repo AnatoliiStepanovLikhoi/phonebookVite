@@ -15,9 +15,9 @@ import Checkbox from '@mui/material/Checkbox';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { register } from 'redux/auth/authOperations';
-import { useAuth } from 'hooks/useAuth';
-import { Loader } from 'components/Loader/Loader';
+import { register } from '../../redux/auth/authOperations';
+import { useAuth } from '../../hooks/useAuth';
+import { Loader } from '../../components/Loader/Loader';
 
 export default function Register() {
   const dispatch = useDispatch();

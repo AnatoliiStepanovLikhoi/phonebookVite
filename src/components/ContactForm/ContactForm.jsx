@@ -4,7 +4,7 @@ import { addContactAsyncThunk } from '../../redux/contacts/contactsOperations';
 import { Form, Label, Input, AddContactButton } from './ContactForm.styled';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { selectContacts, selectStatus } from 'redux/selectors';
+import { selectContacts, selectStatus } from '../../redux/selectors';
 import { Notify } from 'notiflix';
 
 export const ContactForm = () => {

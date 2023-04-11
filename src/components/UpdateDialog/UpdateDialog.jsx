@@ -11,7 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 // import Typography from '@mui/material/Typography';
 import { Notify } from 'notiflix';
-import { capitalizeFirstLetters } from 'components/Utils';
+import { capitalizeFirstLetters } from '../../components/Utils/capitalizeFirstLetters';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { selectContacts } from '../../redux/selectors';

@@ -14,10 +14,13 @@ import Container from '@mui/material/Container';
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { logIn } from 'redux/auth/authOperations';
-import { useAuth } from 'hooks/useAuth';
-import { Loader } from 'components/Loader/Loader';
+import { logIn } from '../../redux/auth/authOperations';
+import { useAuth } from '../../hooks/useAuth';
+import { Loader } from '../../components/Loader/Loader';
+import { DevTool } from '@hookform/devtools';
+import { Notify } from 'notiflix';
 // import { Password } from '@mui/icons-material';
 
 export default function Login() {
@@ -27,19 +30,39 @@ export default function Login() {
   const { isLoggedIn, isLoading } = useAuth();
   const [passwordShown, setPasswordShown] = useState(false);
 
-  const handleSubmit = event => {
+  const form = useForm();
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = form;
+
+  const onSubmit = (data, event) => {
     event.preventDefault();
 
-    const data = new FormData(event.currentTarget);
-    const credentials = Object.fromEntries(data.entries());
+    event.target.reset();
 
-    // const credentials = { name, email, password };
-    // console.log(credentials);
-
-    dispatch(logIn(credentials));
-
-    event.currentTarget.reset();
+    dispatch(logIn(data));
   };
+
+  console.log(errors);
+
+  // const handleSubmit = event => {
+  //   event.preventDefault();
+
+  //   const data = new FormData(event.currentTarget);
+  //   const credentials = Object.fromEntries(data.entries());
+
+  //   // const credentials = { name, email, password };
+  //   // console.log(credentials);
+
+  //   dispatch(logIn(credentials));
+
+  //   event.currentTarget.reset();
+  // };
 
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
@@ -69,17 +92,31 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Log In
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          sx={{ mt: 1 }}
+        >
           <TextField
             margin="normal"
             required
             fullWidth
             id="email"
+            {...register('email', {
+              required: { value: true, message: 'Email is required' },
+              pattern: {
+                value:
+                  /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                message: 'Invalid email format',
+              },
+            })}
             label="Email Address"
             name="email"
             autoComplete="email"
             autoFocus
           />
+          {errors.email && Notify.warning('Email is required')}
           <TextField
             margin="normal"
             required
@@ -88,8 +125,12 @@ export default function Login() {
             label="Password"
             type={passwordShown ? 'text' : 'password'}
             id="password"
+            {...register('password', {
+              required: { value: true, message: 'Password  is required' },
+            })}
             autoComplete="current-password"
           />
+          {errors.password && Notify.warning('Password  is required')}
           <FormControlLabel
             control={<Checkbox value="remember" color="secondary" />}
             label="Show Password"
@@ -127,6 +168,7 @@ export default function Login() {
             </Grid>
           </Grid>
         </Box>
+        <DevTool control={control} />
       </Box>
     </Container>
   );

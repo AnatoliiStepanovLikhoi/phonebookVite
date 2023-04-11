@@ -10,11 +10,11 @@ import {
   // UpdateContactButton,
 } from './ContactListItem.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectStatus } from 'redux/selectors';
+import { selectStatus } from '../../../redux/selectors';
 import {
   deleteContactAsyncThunk,
   // updateContactAsyncThunk,
-} from 'redux/contacts/contactsOperations';
+} from '../../../redux/contacts/contactsOperations';
 import CustomizedDialogs from '../../UpdateDialog/UpdateDialog';
 
 export function ContactListItem(props) {
