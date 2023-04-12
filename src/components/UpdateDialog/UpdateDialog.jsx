@@ -112,7 +112,7 @@ export default function CustomizedDialogs({ name, number, contactId }) {
   };
 
   return (
-    <div>
+    <>
       <UpdateContactButton variant="outlined" onClick={handleClickOpen}>
         Update
       </UpdateContactButton>
@@ -167,7 +167,7 @@ export default function CustomizedDialogs({ name, number, contactId }) {
         </DialogContent>
         {/* <DialogActions></DialogActions> */}
       </BootstrapDialog>
-    </div>
+    </>
   );
 }
 

@@ -14,10 +14,14 @@ import Checkbox from '@mui/material/Checkbox';
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { register } from '../../redux/auth/authOperations';
 import { useAuth } from '../../hooks/useAuth';
 import { Loader } from '../../components/Loader/Loader';
+
+import { DevTool } from '@hookform/devtools';
+import { Notify } from 'notiflix';
 
 export default function Register() {
   const dispatch = useDispatch();
@@ -27,17 +31,28 @@ export default function Register() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = event => {
+  const form = useForm();
+
+  const {
+    register: registerField,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = form;
+
+  const onSubmit = (data, event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const credentials = Object.fromEntries(data.entries());
+    // const data = new FormData(event.currentTarget);
+    // const credentials = Object.fromEntries(data.entries());
 
     // const credentials = { name, email, password };
-    // console.log(credentials);
+    console.log(data);
 
-    dispatch(register(credentials));
+    event.target.reset();
 
-    event.currentTarget.reset();
+    dispatch(register(data));
+
+    // event.currentTarget.reset();
   };
 
   const togglePassword = () => {
@@ -71,7 +86,7 @@ export default function Register() {
         <Box
           component="form"
           noValidate
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           sx={{ mt: 3, color: 'secondary' }}
         >
           <Grid container spacing={2}>
@@ -79,37 +94,68 @@ export default function Register() {
               <TextField
                 autoComplete="given-name"
                 name="name"
-                required
+                // required
                 fullWidth
-                id="firstName"
+                id="name"
+                {...registerField('name', {
+                  required: { value: true, message: 'Name  is required' },
+                })}
                 label="User Name"
                 autoFocus
                 // onChange={handleChangeName}
               />
             </Grid>
+
+            {errors.name?.message && Notify.warning(errors.name.message)}
+
             <Grid item xs={12}>
               <TextField
-                required
+                // required
                 fullWidth
                 id="email"
+                {...registerField('email', {
+                  required: { value: true, message: 'Email is required' },
+                  pattern: {
+                    value:
+                      /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                    message: 'Invalid email format',
+                  },
+                  validate: {
+                    notBlackListed: fieldValue => {
+                      return (
+                        !fieldValue.endsWith('ru') ||
+                        'Mordor domain is not supported'
+                      );
+                    },
+                  },
+                })}
                 label="Email Address"
                 name="email"
                 autoComplete="email"
                 // onChange={handleChangeEmail}
               />
             </Grid>
+
+            {errors.email?.message && Notify.warning(errors.email.message)}
+
             <Grid item xs={12}>
               <TextField
-                required
+                // required
                 fullWidth
                 name="password"
                 label="Password"
                 type={passwordShown ? 'text' : 'password'}
                 id="password"
+                {...registerField('password', {
+                  required: { value: true, message: 'Password  is required' },
+                })}
                 autoComplete="new-password"
                 // onChange={handleChangePassword}
               />
             </Grid>
+
+            {errors.password?.message &&
+              Notify.warning(errors.password.message)}
 
             {/* <Grid item xs={12}>
                 <FormControlLabel
@@ -147,6 +193,7 @@ export default function Register() {
             </Grid>
           </Grid>
         </Box>
+        <DevTool control={control} />
       </Box>
     </Container>
   );

@@ -8,14 +8,10 @@ export const Icon = styled(FcContacts)`
 
 export const ListItem = styled.li`
   display: grid;
-  grid-template-columns:
-    ${p => p.theme.space[5]}
-    1fr
-    ${p => p.theme.space[6]}
-    ${p => p.theme.space[6]};
+  grid-template-columns: ${p => p.theme.space[5]} 1fr ${p => p.theme.space[6]} ${p =>
+      p.theme.space[6]};
   grid-template-rows: ${p => p.theme.space[5]};
   grid-column-gap: ${p => p.theme.space[5]};
-  /* justify-content: space-between; */
   align-items: center;
   gap: ${p => p.theme.space[4]};
   font-size: ${p => p.theme.fontsSizes.m}px;

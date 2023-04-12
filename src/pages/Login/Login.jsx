@@ -36,7 +36,6 @@ export default function Login() {
     register,
     control,
     handleSubmit,
-    reset,
     formState: { errors },
   } = form;
 
@@ -48,7 +47,7 @@ export default function Login() {
     dispatch(logIn(data));
   };
 
-  console.log(errors);
+  // console.log(errors);
 
   // const handleSubmit = event => {
   //   event.preventDefault();
@@ -100,7 +99,7 @@ export default function Login() {
         >
           <TextField
             margin="normal"
-            required
+            // required
             fullWidth
             id="email"
             {...register('email', {
@@ -116,10 +115,12 @@ export default function Login() {
             autoComplete="email"
             autoFocus
           />
-          {errors.email && Notify.warning('Email is required')}
+
+          {errors.email?.message && Notify.warning(errors.email.message)}
+
           <TextField
             margin="normal"
-            required
+            // required
             fullWidth
             name="password"
             label="Password"
@@ -130,7 +131,9 @@ export default function Login() {
             })}
             autoComplete="current-password"
           />
-          {errors.password && Notify.warning('Password  is required')}
+
+          {errors.password?.message && Notify.warning(errors.password.message)}
+
           <FormControlLabel
             control={<Checkbox value="remember" color="secondary" />}
             label="Show Password"
