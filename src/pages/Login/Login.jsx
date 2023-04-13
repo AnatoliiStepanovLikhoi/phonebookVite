@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { Tooltip } from '@mui/material';
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -30,13 +31,18 @@ export default function Login() {
   const { isLoggedIn, isLoading } = useAuth();
   const [passwordShown, setPasswordShown] = useState(false);
 
-  const form = useForm();
+  const form = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
 
   const {
     register,
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = form;
 
   const onSubmit = (data, event) => {
@@ -109,6 +115,14 @@ export default function Login() {
                   /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
                 message: 'Invalid email format',
               },
+              validate: {
+                notBlackListed: fieldValue => {
+                  return (
+                    !fieldValue.endsWith('ru') ||
+                    'Mordor domain is not supported'
+                  );
+                },
+              },
             })}
             label="Email Address"
             name="email"
@@ -148,14 +162,19 @@ export default function Login() {
           {isLoading ? (
             <Loader color="#1de9b6"></Loader>
           ) : (
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2, bgcolor: '#1de9b6', color: '#000' }}
-            >
-              Log In
-            </Button>
+            <Tooltip title="Please fill all fields above" followCursor>
+              <span>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  disabled={!isValid}
+                  sx={{ mt: 3, mb: 2, bgcolor: '#1de9b6', color: '#000' }}
+                >
+                  Log In
+                </Button>
+              </span>
+            </Tooltip>
           )}
 
           <Grid container>

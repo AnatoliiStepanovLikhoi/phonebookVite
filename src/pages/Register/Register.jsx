@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import { Tooltip } from '@mui/material';
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -37,7 +38,7 @@ export default function Register() {
     register: registerField,
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = form;
 
   const onSubmit = (data, event) => {
@@ -175,14 +176,19 @@ export default function Register() {
           {isLoading ? (
             <Loader color="#1de9b6"></Loader>
           ) : (
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Register
-            </Button>
+            <Tooltip title="Please fill all fields above" followCursor>
+              <span>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  disabled={!isValid}
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Register
+                </Button>
+              </span>
+            </Tooltip>
           )}
 
           <Grid container justifyContent="flex-end">
